@@ -1,13 +1,13 @@
 package main
 
 import (
-	usecases "github.com/moohbr/WebMonitor/src/use_cases"
+	"fmt"
+
+	cmd "github.com/moohbr/WebMonitor/src/cmd"
 )
 
 func main() {
+	fmt.Println("WebMonitor")
 
-	usecases.PingTest()
-
-	usecases.SendMail([]string{"matheus.araujo@kukac.com.br"}, usecases.TestMail)
-
+	cmd.RootCmd.Execute()
 }

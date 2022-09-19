@@ -9,4 +9,9 @@ require (
 	gopkg.in/mail.v2 v2.3.1
 )
 
-require gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+require github.com/inconshreveable/mousetrap v1.0.1 // indirect
+
+require (
+	github.com/spf13/cobra v1.5.0
+	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
+)

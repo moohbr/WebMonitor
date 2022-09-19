@@ -1,7 +1,6 @@
 package usecases
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
@@ -9,18 +8,16 @@ import (
 	infrastructure "github.com/moohbr/WebMonitor/src/infrastructure/database"
 )
 
-// PingServer pings a server
 func PingServer(server data.Server) data.Server {
 	resp, err := http.Get(server.URL)
 	if err != nil {
 		log.Fatal(err)
 	}
 	server.LastStatus = resp.StatusCode
-	fmt.Println(server)
+	log.Println(server)
 	return server
 }
 
-// PingAllServers pings all servers
 func PingAllServers() {
 	database := infrastructure.Database{}
 	defer database.Close()
@@ -33,7 +30,7 @@ func PingAllServers() {
 }
 
 func PingTest() {
-	log.Println("PingTest")
+	log.Println("PingTest - Starting ping test")
 	req, err := http.Get("https://google.com")
 	if err != nil {
 		log.Fatal(err)

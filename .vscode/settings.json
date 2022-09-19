@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "WebMon",
+            "database": "${workspaceFolder:WebMonitor}/database.db"
+        }
+    ]
+}

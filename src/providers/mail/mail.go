@@ -2,7 +2,6 @@ package mail
 
 import (
 	"crypto/tls"
-	"fmt"
 
 	config "github.com/moohbr/WebMonitor/src/infrastructure/config"
 	gomail "gopkg.in/mail.v2"
@@ -45,8 +44,7 @@ func (mail *Mail) Send() error {
 
 	// Now send E-Mail
 	if err := dialer.DialAndSend(message); err != nil {
-		fmt.Println(err)
-		panic(err)
+		return err
 	}
 
 	return nil

@@ -35,7 +35,12 @@ func (db *Database) InitDatabase() {
 }
 
 func (db *Database) Connect() {
-	db.DB.Ping()
+	err := db.DB.Ping()
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		log.Println("[SYSTEM] Already have a database installed!")
+	}
 }
 
 // AddServer adds a server to the database
