@@ -5,7 +5,7 @@ import (
 	"log"
 
 	_ "github.com/mattn/go-sqlite3"
-	data "github.com/moohbr/WebMonitor/data"
+	data "github.com/moohbr/WebMonitor/src/data"
 )
 
 // Database is the database struct

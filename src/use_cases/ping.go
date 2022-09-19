@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	data "github.com/moohbr/WebMonitor/src/data"
-	infrastructure "github.com/moohbr/WebMonitor/src/infrastructure"
+	infrastructure "github.com/moohbr/WebMonitor/src/infrastructure/database"
 )
 
 // PingServer pings a server
