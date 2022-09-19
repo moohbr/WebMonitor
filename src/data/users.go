@@ -1,8 +1,6 @@
-package users
+package data
 
-import (
-	"time"
-)
+import "time"
 
 type User struct {
 	Name      string

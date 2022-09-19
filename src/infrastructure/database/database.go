@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"log"
 	data "github.com/moohbr/WebMonitor/data"
-
 	_ "github.com/mattn/go-sqlite3"
 )
 
