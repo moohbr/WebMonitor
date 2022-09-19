@@ -1,16 +1,11 @@
 package main
 
 import (
-	"fmt"
-
-	data "github.com/moohbr/WebMonitor/src/data"
+	usecases "github.com/moohbr/WebMonitor/src/use_cases"
 )
 
 func main() {
-	s := data.Server{
-		Name: "Test",
-		IP:   "someIP",
-		URL:  "someURL",
-	}
-	fmt.Println(s)
+
+	usecases.PingTest()
+
 }

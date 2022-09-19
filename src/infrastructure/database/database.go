@@ -1,10 +1,11 @@
-package database
+package infrastructure
 
 import (
 	"database/sql"
 	"log"
-	data "github.com/moohbr/WebMonitor/data"
+
 	_ "github.com/mattn/go-sqlite3"
+	data "github.com/moohbr/WebMonitor/data"
 )
 
 // Database is the database struct
@@ -31,6 +32,10 @@ func (db *Database) InitDatabase() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func (db *Database) Connect() {
+	db.DB.Ping()
 }
 
 // AddServer adds a server to the database
@@ -141,6 +146,3 @@ func (db *Database) DeleteUser(name string) {
 func (db *Database) Close() {
 	db.DB.Close()
 }
-
-
-
