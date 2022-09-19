@@ -1,4 +1,4 @@
-package infrastructure
+package database
 
 import (
 	"database/sql"

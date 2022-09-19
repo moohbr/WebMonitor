@@ -1,10 +1,11 @@
 package mail
 
 import (
+	"crypto/tls"
 	"fmt"
-	"log"
-	"net/smtp"
-	"strings"
+
+	config "github.com/moohbr/WebMonitor/src/infrastructure/config"
+	gomail "gopkg.in/mail.v2"
 )
 
 // Mail is the mail struct
@@ -16,24 +17,37 @@ type Mail struct {
 }
 
 // NewMail creates a new mail
-func NewMail(from string, to []string, subject string, body string) *Mail {
-	return &Mail{from, to, subject, body}
+func NewMail(to []string, subject string, body string) *Mail {
+	return &Mail{To: to, Subject: subject, Body: body}
 }
 
 // Send sends the mail
-func (m *Mail) Send() {
-	msg := "From: " + m.From + "\n" +
-		"To: " + strings.Join(m.To, ", ") + "\n" +
-		"Subject: " + m.Subject + "\n\n" +
-		m.Body
+func (mail *Mail) Send() error {
+	config.LoadEnv()
+	message := gomail.NewMessage()
 
-	err := smtp.SendMail("smtp.gmail.com:587",
-		smtp.PlainAuth("", " ", " ", "smtp.gmail.com"),
-		m.From, m.To, []byte(msg))
+	message.SetHeader("From", config.GetEnv("SMTP_USER"))
+	// Set E-Mail receivers
+	message.SetHeader("To", mail.To...)
 
-	if err != nil {
-		log.Fatal(err)
+	// Set E-Mail subject
+	message.SetHeader("Subject", mail.Subject)
+
+	// Set E-Mail body. You can set plain text or html with text/html
+	message.SetBody("text/plain", mail.Body)
+
+	// Settings for SMTP server
+	dialer := gomail.NewDialer(config.GetEnv("SMPT_SERVER"), config.ConvertToInt(config.GetEnv("SMTP_PORT")), config.GetEnv("SMTP_USER"), config.GetEnv("SMTP_PASSWORD"))
+
+	// This is only needed when SSL/TLS certificate is not valid on server.
+	// In production this should be set to false.
+	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	// Now send E-Mail
+	if err := dialer.DialAndSend(message); err != nil {
+		fmt.Println(err)
+		panic(err)
 	}
 
-	fmt.Println("Mail sent!")
+	return nil
 }

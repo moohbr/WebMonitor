@@ -1,8 +1,9 @@
-package infrastructure
+package config
 
 import (
 	"log"
 	"os"
+	"strconv"
 
 	dotenv "github.com/joho/godotenv"
 )
@@ -18,4 +19,12 @@ func LoadEnv() {
 // GetEnv gets an environment variable
 func GetEnv(key string) string {
 	return os.Getenv(key)
+}
+
+func ConvertToInt(value string) int {
+	valueInt, err := strconv.Atoi(value)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return valueInt
 }

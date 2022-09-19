@@ -8,4 +8,6 @@ func main() {
 
 	usecases.PingTest()
 
+	usecases.SendMail([]string{"matheus.araujo@kukac.com.br"}, usecases.TestMail)
+
 }
