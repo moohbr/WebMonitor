@@ -4,6 +4,8 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
+
+	show "github.com/moohbr/WebMonitor/src/cmd/show"
 )
 
 var (
@@ -24,6 +26,5 @@ func init() {
 
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 
-	ShowInit()
-	RootCmd.AddCommand(ShowCmd)
+	RootCmd.AddCommand(show.ShowCmd)
 }

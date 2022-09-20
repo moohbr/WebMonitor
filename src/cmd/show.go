@@ -1,18 +1,29 @@
-package cmd
+package show
 
 import (
 	"fmt"
 
+	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
 	"github.com/spf13/cobra"
 )
 
 var (
+	verbose bool
 	ShowCmd = &cobra.Command{
 		Use:   "show",
 		Short: "Show something",
 		Long:  `With this command you can show something, like the servers or the users.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("Show all servers")
+			db := database.NewDatabase()
+
+			db.Connect()
+
+			servers := db.GetServers()
+
+			for _, server := range servers {
+				fmt.Println(server)
+			}
+
 		},
 	}
 
