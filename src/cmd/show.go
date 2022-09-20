@@ -7,8 +7,6 @@ import (
 )
 
 var (
-	verbose bool
-
 	ShowCmd = &cobra.Command{
 		Use:   "show",
 		Short: "Show something",
@@ -46,7 +44,7 @@ var (
 	}
 )
 
-func init() {
+func ShowInit() {
 	ShowCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 	ShowCmd.AddCommand(showServerCmd)
 	ShowCmd.AddCommand(showUsersCmd)

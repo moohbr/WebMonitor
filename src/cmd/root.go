@@ -3,7 +3,6 @@ package cmd
 import (
 	"log"
 
-	show "github.com/moohbr/WebMonitor/src/cmd/show"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +21,9 @@ It will ping the websites and send a report by email.`,
 )
 
 func init() {
+
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 
-	RootCmd.AddCommand(show.ShowCmd)
+	ShowInit()
+	RootCmd.AddCommand(ShowCmd)
 }
