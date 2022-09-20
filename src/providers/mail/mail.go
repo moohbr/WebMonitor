@@ -32,7 +32,7 @@ func (mail *Mail) Send() error {
 	dialer := gomail.NewDialer(config.GetEnv("SMPT_SERVER"), config.ConvertToInt(config.GetEnv("SMTP_PORT")),
 		config.GetEnv("SMTP_USER"), config.GetEnv("SMTP_PASSWORD"))
 
-	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: config.ConvertToBool(config.GetEnv("SMTP_INSECURE"))}
 
 	if err := dialer.DialAndSend(message); err != nil {
 		panic(err)

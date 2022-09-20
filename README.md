@@ -58,8 +58,7 @@ To run this project, you will need to add the following environment variables to
 `SMTP_PORT` - SMTP server port
 `SMTP_USER` - SMTP server user
 `SMTP_PASSWORD` - SMTP server password
-`SMTP_TLS` - SMTP server TLS (true/false)
-`SMTP_SSL` - SMTP server SSL (true/false)
+`SMTP_INSECURE` - SMTP server insecure
 
 ## CLI Arguments
 
