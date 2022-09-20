@@ -3,37 +3,60 @@ package ping
 import (
 	"log"
 	"net/http"
+	"strconv"
+	"sync"
 	"time"
 
 	data "github.com/moohbr/WebMonitor/src/data"
 	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
-	mail "github.com/moohbr/WebMonitor/src/use_cases/sendMail"
 	templates "github.com/moohbr/WebMonitor/src/providers/mail/templates"
+	mail "github.com/moohbr/WebMonitor/src/use_cases/sendMail"
 )
 
-func PingServer(server data.Server) data.Server {
-	resp, err := http.Get(server.URL)
-	if err != nil {
-		log.Fatal(err)
-	}
+var (
+	wg sync.WaitGroup
+)
 
-	server.LastStatus = resp.StatusCode
-	server.LastCheck = time.Now()
-	db := database.OpenDatabase()
+func PingServer(server data.Server) {
+	defer wg.Wait()
 
-	defer db.Close()
+	if server.Monitor {
+		start := time.Now()
+		response, err := http.Get("https://" + server.URL)
+		if err != nil {
+			log.Println("[ERROR] Error pinging server: " + server.Name)
+			log.Println("[ERROR] Error: " + err.Error())
+			server.LastStatus = 0
+		} else {
+			server.LastStatus = response.StatusCode
+		}
 
-	db.UpdateServer(server)
+		server.LastCheck = time.Now().UTC().Format("2006-01-02 15:04:05")
+		server.AvarageResponseTime = time.Now().Sub(start)
 
-	if server.LastStatus != 200 {
-		log.Println("[SYSTEM] Server " + server.Name + " is down")
+		log.Println("[SYSTEM] " + server.Name + " | " + server.IP + " | " + server.URL + " | " +
+			strconv.FormatInt(server.AvarageResponseTime.Milliseconds(), 10) + "ms | " + server.LastUpdate + " | " + server.LastCheck +
+			" | " + strconv.Itoa(server.LastStatus) + " | " + strconv.FormatBool(server.Monitor))
+		db := database.OpenDatabase()
+		defer db.Close()
+
+		db.UpdateServer(server)
 		users := db.GetUsers()
-		for _, user := range users {
-			log.Println("[SYSTEM] Sending email to " + user.Email)
-			mail.SendMail([]string{user.Email}, templates.ServerDown(server))
+
+		if len(users) > 0 {
+			wg.Add(len(users))
+			if server.LastStatus != 200 {
+				for _, user := range users {
+					go mail.SendMail([]string{user.Email}, templates.ServerDown(server), &wg)
+				}
+				return
+			}
+			for _, user := range users {
+				go mail.SendMail([]string{user.Email}, templates.ServerUp(server), &wg)
+			}
+			return
 		}
 	}
-	return server
 }
 
 func PingAllServers() {

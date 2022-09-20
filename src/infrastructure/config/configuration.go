@@ -8,7 +8,6 @@ import (
 	dotenv "github.com/joho/godotenv"
 )
 
-// LoadEnv loads the environment variables
 func LoadEnv() {
 	err := dotenv.Load()
 	if err != nil {
@@ -16,7 +15,6 @@ func LoadEnv() {
 	}
 }
 
-// GetEnv gets an environment variable
 func GetEnv(key string) string {
 	return os.Getenv(key)
 }
@@ -27,4 +25,12 @@ func ConvertToInt(value string) int {
 		log.Fatal(err)
 	}
 	return valueInt
+}
+
+func ConvertToBool(value string) bool {
+	valueBool, err := strconv.ParseBool(value)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return valueBool
 }

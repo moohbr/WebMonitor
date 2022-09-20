@@ -20,11 +20,13 @@ func NewDatabase() *Database {
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS servers (name TEXT PRIMARY KEY, ip TEXT, url TEXT, avarageResponseTime TEXT , lastUpdate TEXT , lastCheck TEXT , lastStatus TEXT, monitor BOOLEAN)")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS servers (name TEXT PRIMARY KEY, ip TEXT, url TEXT, avarageResponseTime TEXT, " +
+		"lastUpdate TEXT , lastCheck TEXT , lastStatus TEXT, monitor BOOLEAN)")
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY, password TEXT, email TEXT, admin BOOLEAN, lastLogin TEXT, lastNotif TEXT)")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY, password TEXT, email TEXT," +
+		"admin BOOLEAN, lastLogin TEXT, lastNotif TEXT)")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,11 +43,11 @@ func OpenDatabase() *Database {
 
 // AddServer adds a server to the database
 func (db *Database) AddServer(s data.Server) {
-	_, err := db.Exec("INSERT INTO servers VALUES (?, ?, ?, ?, ?, ?, ?, ?)", s.Name, s.IP, s.URL, s.AvarageResponseTime, s.LastUpdate.Unix(), s.LastCheck.Unix(), s.LastStatus, s.Monitor)
+	_, err := db.Exec("INSERT INTO servers VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+		s.Name, s.IP, s.URL, s.AvarageResponseTime, s.LastUpdate, s.LastCheck, s.LastStatus, s.Monitor)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("[SYSTEM] Server %s added  to database!", s.Name)
 }
 
 // AddUser adds a user to the database
@@ -59,10 +61,9 @@ func (db *Database) AddUser(u data.User) {
 // GetServer gets a server from the database
 func (db *Database) GetServer(name string) data.Server {
 	var s data.Server
-	lastupdate := s.LastUpdate.String()
-	lastcheck := s.LastCheck.String()
+
 	err := db.QueryRow("SELECT * FROM servers WHERE name=?", name).Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime,
-		&lastupdate, &lastcheck, &s.LastStatus, &s.Monitor)
+		&s.LastUpdate, &s.LastCheck, &s.LastStatus, &s.Monitor)
 
 	if err != nil {
 		log.Fatal(err)
@@ -73,9 +74,8 @@ func (db *Database) GetServer(name string) data.Server {
 // GetUser gets a user from the database
 func (db *Database) GetUser(name string) data.User {
 	var u data.User
-	lastlogin := u.LastLogin.String()
-	lastnotif := u.LastNotif.String()
-	err := db.QueryRow("SELECT * FROM users WHERE name=?", name).Scan(&u.Name, &u.Password, &u.Email, &u.Admin, &lastlogin, &lastnotif)
+
+	err := db.QueryRow("SELECT * FROM users WHERE name=?", name).Scan(&u.Name, &u.Password, &u.Email, &u.Admin, &u.LastLogin, &u.LastNotif)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -92,9 +92,8 @@ func (db *Database) GetServers() []data.Server {
 
 	for rows.Next() {
 		var s data.Server
-		lastupdate := s.LastUpdate.String()
-		lastcheck := s.LastCheck.String()
-		err = rows.Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime, &lastupdate, &lastcheck, &s.LastStatus, &s.Monitor)
+
+		err = rows.Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime, &s.LastUpdate, &s.LastCheck, &s.LastStatus, &s.Monitor)
 
 		if err != nil {
 			log.Fatal(err)
@@ -127,7 +126,8 @@ func (db *Database) GetUsers() []data.User {
 
 // UpdateServer updates a server in the database
 func (db *Database) UpdateServer(s data.Server) {
-	_, err := db.Exec("UPDATE servers SET ip=?, url=?, avarageResponseTime=?, lastUpdate=?, lastCheck=?, lastStatus=?, monitor=? WHERE name=?", s.IP, s.URL, s.AvarageResponseTime, s.LastUpdate.Unix(), s.LastCheck.Unix(), s.LastStatus, s.Monitor, s.Name)
+	_, err := db.Exec("UPDATE servers SET ip=?, url=?, avarageResponseTime=?, lastUpdate=?, lastCheck=?, lastStatus=?, monitor=? WHERE name=?",
+		s.IP, s.URL, s.AvarageResponseTime, s.LastUpdate, s.LastCheck, s.LastStatus, s.Monitor, s.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -135,7 +135,8 @@ func (db *Database) UpdateServer(s data.Server) {
 
 // UpdateUser updates a user in the database
 func (db *Database) UpdateUser(u data.User) {
-	_, err := db.Exec("UPDATE users SET password=?, email=?, admin=?, lastLogin=?, lastNotif=? WHERE name=?", u.Password, u.Email, u.Admin, u.LastLogin.Unix(), u.LastNotif.Unix(), u.Name)
+	_, err := db.Exec("UPDATE users SET password=?, email=?, admin=?, lastLogin=?, lastNotif=? WHERE name=?",
+		u.Password, u.Email, u.Admin, u.LastLogin, u.LastNotif, u.Name)
 	if err != nil {
 		log.Fatal(err)
 	}

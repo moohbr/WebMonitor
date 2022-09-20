@@ -7,8 +7,8 @@ type Server struct {
 	IP                  string
 	URL                 string
 	AvarageResponseTime time.Duration
-	LastUpdate          time.Time
-	LastCheck           time.Time
+	LastUpdate          string
+	LastCheck           string
 	LastStatus          int
 	Monitor             bool
 }

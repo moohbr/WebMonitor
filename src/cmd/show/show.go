@@ -1,7 +1,6 @@
 package show
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -11,10 +10,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-	LayoutISO = "2006-01-02 15:04:05"
-)
-
 var (
 	verbose bool
 	ShowCmd = &cobra.Command{
@@ -22,9 +17,9 @@ var (
 		Short: "Show something",
 		Long:  `With this command you can show something, like the servers or the users.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Println("[SYSTEM] Add something use the subcommands")
-			log.Println("[SYSTEM] Use 'show server' to show a server")
-			log.Println("[SYSTEM] Use 'show user' to show a user")
+			log.Println("[HELP] Add something use the subcommands")
+			log.Println("[HELP] Use 'show server' to show a server")
+			log.Println("[HELP] Use 'show user' to show a user")
 		},
 	}
 
@@ -33,15 +28,17 @@ var (
 		Short: "Show a server",
 		Long:  `With this command you can show a server.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Println("[SYSTEM] Showing a server")
+			if verbose {
+				log.Println("[SYSTEM] Showing a server")
+			}
 			db := database.NewDatabase()
-			server := db.GetServer(args[0])
+			server := db.GetServer(cmd.Flag("name").Value.String())
 			if server.Name != "" {
 				table := tablewriter.NewWriter(os.Stdout)
 				table.SetHeader([]string{"Name", "IP", "URL", "Avarage Response Time", "Last Update", "Last Check", "Last Status", "Monitor"})
 				laststatus := strconv.Itoa(server.LastStatus)
 				table.Append([]string{server.Name, server.IP, server.URL, server.AvarageResponseTime.String(),
-					server.LastUpdate.Format(LayoutISO), server.LastCheck.Format(LayoutISO), laststatus, strconv.FormatBool(server.Monitor)})
+					server.LastUpdate, server.LastCheck, laststatus, strconv.FormatBool(server.Monitor)})
 				defer table.Render()
 			} else {
 				log.Println("[SYSTEM] No server found!")
@@ -64,8 +61,7 @@ var (
 				for _, server := range servers {
 					laststatus := strconv.Itoa(server.LastStatus)
 					table.Append([]string{server.Name, server.IP, server.URL, server.AvarageResponseTime.String(),
-						server.LastUpdate.Format(LayoutISO), server.LastCheck.Format(LayoutISO), laststatus, strconv.FormatBool(server.Monitor)})
-
+						server.LastUpdate, server.LastCheck, laststatus, strconv.FormatBool(server.Monitor)})
 				}
 				defer table.Render()
 			} else {
@@ -79,14 +75,28 @@ var (
 		Short: "Show all users",
 		Long:  `With this command you can show all users.`,
 		Run: func(cmd *cobra.Command, arg []string) {
-			fmt.Println("Show all users")
+			db := database.NewDatabase()
+			users := db.GetUsers()
+			if len(users) > 0 {
+				table := tablewriter.NewWriter(os.Stdout)
+				table.SetHeader([]string{"Name", "Email", "Password", "Admin"})
+				for _, user := range users {
+					table.Append([]string{user.Name, user.Email, user.Password, strconv.FormatBool(user.Admin)})
+				}
+				defer table.Render()
+			} else {
+				log.Println("[SYSTEM] No users found!")
+			}
 		},
 	}
 )
 
 func init() {
-	ShowCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 	ShowCmd.AddCommand(showServersCmd)
-	ShowCmd.AddCommand(showServerCmd)
+	showServerCmd.Flags().StringP("name", "n", "", "The name of the server")
+	showServerCmd.MarkFlagRequired("name")
+	showServerCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Show more information")
 
+	ShowCmd.AddCommand(showServerCmd)
+	ShowCmd.AddCommand(showUsersCmd)
 }

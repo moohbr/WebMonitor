@@ -5,9 +5,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	show "github.com/moohbr/WebMonitor/src/cmd/show"
-	install "github.com/moohbr/WebMonitor/src/cmd/install"
 	add "github.com/moohbr/WebMonitor/src/cmd/add"
+	install "github.com/moohbr/WebMonitor/src/cmd/install"
+	ping "github.com/moohbr/WebMonitor/src/cmd/ping"
+	remove "github.com/moohbr/WebMonitor/src/cmd/remove"
+	show "github.com/moohbr/WebMonitor/src/cmd/show"
+	update "github.com/moohbr/WebMonitor/src/cmd/update"
 )
 
 var (
@@ -29,7 +32,9 @@ func init() {
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 
 	RootCmd.AddCommand(show.ShowCmd)
-	RootCmd.AddCommand(install.InstallCmd)
 	RootCmd.AddCommand(add.AddCmd)
-
+	RootCmd.AddCommand(update.UpdateCmd)
+	RootCmd.AddCommand(remove.RemoveCmd)
+	RootCmd.AddCommand(install.InstallCmd)
+	RootCmd.AddCommand(ping.PingCmD)
 }

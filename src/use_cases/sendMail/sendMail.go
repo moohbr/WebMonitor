@@ -1,18 +1,15 @@
 package sendMail
 
 import (
-	"log"
+	"sync"
 
 	email "github.com/moohbr/WebMonitor/src/providers/mail"
 	templates "github.com/moohbr/WebMonitor/src/providers/mail/templates"
 )
 
 // Function to send the report mail
-func SendMail(To []string, template templates.Mail) {
+func SendMail(To []string, template templates.Mail, wg *sync.WaitGroup) {
 	mail := email.NewMail(To, template.Subject, template.Body)
-	err := mail.Send()
-	if err != nil {
-		log.Println(err)
-	}
-	log.Println("[SYSTEM] - The email was sent!")
+	mail.Send()
+	wg.Done()
 }
