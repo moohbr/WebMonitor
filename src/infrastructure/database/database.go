@@ -34,12 +34,16 @@ func (db *Database) InitDatabase() {
 	}
 }
 
-func (db *Database) Connect() {
+func (db *Database) Connect() bool {
+	exist := false
 	err := db.DB.Ping()
 	if err != nil {
 		log.Fatal(err)
+		return exist
 	} else {
 		log.Println("[SYSTEM] Already have a database installed!")
+		exist = true
+		return exist
 	}
 }
 
@@ -49,6 +53,7 @@ func (db *Database) AddServer(s data.Server) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("[SYSTEM] Server %s added to database!", s.Name)
 }
 
 // AddUser adds a user to the database

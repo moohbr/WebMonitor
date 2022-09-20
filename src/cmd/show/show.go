@@ -2,6 +2,7 @@ package show
 
 import (
 	"fmt"
+	"log"
 
 	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
 	"github.com/spf13/cobra"
@@ -16,14 +17,15 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			db := database.NewDatabase()
 
-			db.Connect()
-
 			servers := db.GetServers()
+			if len(servers) > 0 {
 
-			for _, server := range servers {
-				fmt.Println(server)
+				for _, server := range servers {
+					log.Println(server)
+				}
+			} else {
+				log.Println("[SYSTEM] No servers found!")
 			}
-
 		},
 	}
 

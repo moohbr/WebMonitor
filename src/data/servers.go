@@ -1,14 +1,12 @@
 package data
 
-import "time"
-
 type Server struct {
 	Name                string
 	IP                  string
 	URL                 string
-	AvarageResponseTime time.Duration
-	LastUpdate          time.Time
-	LastCheck           time.Time
+	AvarageResponseTime int
+	LastUpdate          string
+	LastCheck           string
 	LastStatus          int
 	Monitor             bool
 }
