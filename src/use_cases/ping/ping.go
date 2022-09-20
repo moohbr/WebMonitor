@@ -8,6 +8,7 @@ import (
 	data "github.com/moohbr/WebMonitor/src/data"
 	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
 	mail "github.com/moohbr/WebMonitor/src/use_cases/sendMail"
+	templates "github.com/moohbr/WebMonitor/src/providers/mail/templates"
 )
 
 func PingServer(server data.Server) data.Server {
@@ -29,7 +30,7 @@ func PingServer(server data.Server) data.Server {
 		users := db.GetUsers()
 		for _, user := range users {
 			log.Println("[SYSTEM] Sending email to " + user.Email)
-			sendMail.SendEmail(user.Email, "Server "+server.Name+" is down", "The server "+server.Name+" is down. Please check it.")
+			mail.SendMail([]string{user.Email}, templates.ServerDown(server))
 		}
 	}
 	return server

@@ -14,5 +14,5 @@ func SendMail(To []string, template templates.Mail) {
 	if err != nil {
 		log.Println(err)
 	}
-	log.Println("SendMail - The email was sent!")
+	log.Println("[SYSTEM] - The email was sent!")
 }
