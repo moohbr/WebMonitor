@@ -2,6 +2,7 @@ package add
 
 import (
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -31,10 +32,13 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			log.Println("[SYSTEM] Adding a server")
 			name := args[0]
-			url := args[1]
+			ip := args[1]
+			url := args[2]
+
 			server := data.Server{
 				Name:                name,
-				IP:                  url,
+				IP:                  ip,
+				URL:                 url,
 				AvarageResponseTime: 0,
 				LastUpdate:          time.Now(),
 				LastCheck:           time.Now(),
@@ -42,7 +46,7 @@ var (
 				Monitor:             true,
 			}
 
-			db := database.NewDatabase()
+			db := database.OpenDatabase()
 			db.AddServer(server)
 		},
 	}
@@ -52,7 +56,28 @@ var (
 		Short: "Add a user",
 		Long:  `With this command you can add a user.`,
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Println("[SYSTEM] Add a user")
+			log.Println("[SYSTEM] Adding a user")
+			name := args[0]
+			password := args[1]
+			email := args[2]
+
+			admin, err := strconv.ParseBool(args[3])
+			if err != nil {
+				log.Println("[ERROR] Error parsing admin")
+				log.Println("[ERROR] Error: ", err)
+			}
+
+			user := data.User{
+				Name:      name,
+				Password:  password,
+				Email:     email,
+				Admin:     admin,
+				LastLogin: time.Now(),
+				LastNotif: time.Now(),
+			}
+
+			db := database.OpenDatabase()
+			db.AddUser(user)
 		},
 	}
 )

@@ -15,16 +15,9 @@ var (
 		Short: "Install database",
 		Long:  `With this command you can install to storage data, like the servers or the users.`,
 		Run: func(cmd *cobra.Command, args []string) {
-
-			db := database.NewDatabase()
-
-			exist := db.Connect()
-
-			if !exist {
-				log.Println("[SYSTEM] Database created")
-				db.InitDatabase()
-			}
-
+			log.Println("[SYSTEM] Installing database")
+			database.NewDatabase()
+			log.Println("[SYSTEM] Database installed")
 		},
 	}
 )

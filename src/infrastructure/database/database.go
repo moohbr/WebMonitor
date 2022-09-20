@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/mattn/go-sqlite3"
 	data "github.com/moohbr/WebMonitor/src/data"
 )
 
@@ -15,36 +15,28 @@ type Database struct {
 
 // NewDatabase creates a new database
 func NewDatabase() *Database {
-	db, err := sql.Open("sqlite3", "file:database.db?cache=shared&mode=rwc")
+	sqlite3.Version()
+	db, err := sql.Open("sqlite3", "file:database.db?cache=shared&mode=rwc&parseTime=true")
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS servers (name TEXT PRIMARY KEY, ip TEXT, url TEXT, avarageResponseTime TEXT , lastUpdate TEXT , lastCheck TEXT , lastStatus TEXT, monitor BOOLEAN)")
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY, password TEXT, email TEXT, admin BOOLEAN, lastLogin TEXT, lastNotif TEXT)")
 	if err != nil {
 		log.Fatal(err)
 	}
 	return &Database{db}
 }
 
-// InitDatabase creates the tables
-func (db *Database) InitDatabase() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS servers (name TEXT PRIMARY KEY, ip TEXT, url TEXT, avarageResponseTime INTEGER, lastUpdate INTEGER, lastCheck INTEGER, lastStatus INTEGER, monitor INTEGER)")
+func OpenDatabase() *Database {
+	db, err := sql.Open("sqlite3", "file:database.db?cache=shared&mode=rwc&parseTime=true")
 	if err != nil {
 		log.Fatal(err)
 	}
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (name TEXT PRIMARY KEY, password TEXT, email TEXT, admin INTEGER, lastLogin INTEGER, lastNotif INTEGER)")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
-func (db *Database) Connect() bool {
-	exist := false
-	err := db.DB.Ping()
-	if err != nil {
-		log.Fatal(err)
-		return exist
-	} else {
-		log.Println("[SYSTEM] Already have a database installed!")
-		exist = true
-		return exist
-	}
+	return &Database{db}
 }
 
 // AddServer adds a server to the database
@@ -53,7 +45,7 @@ func (db *Database) AddServer(s data.Server) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("[SYSTEM] Server %s added to database!", s.Name)
+	log.Printf("[SYSTEM] Server %s added  to database!", s.Name)
 }
 
 // AddUser adds a user to the database
@@ -67,7 +59,11 @@ func (db *Database) AddUser(u data.User) {
 // GetServer gets a server from the database
 func (db *Database) GetServer(name string) data.Server {
 	var s data.Server
-	err := db.QueryRow("SELECT * FROM servers WHERE name=?", name).Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime, &s.LastUpdate, &s.LastCheck, &s.LastStatus, &s.Monitor)
+	lastupdate := s.LastUpdate.String()
+	lastcheck := s.LastCheck.String()
+	err := db.QueryRow("SELECT * FROM servers WHERE name=?", name).Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime,
+		&lastupdate, &lastcheck, &s.LastStatus, &s.Monitor)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -77,7 +73,9 @@ func (db *Database) GetServer(name string) data.Server {
 // GetUser gets a user from the database
 func (db *Database) GetUser(name string) data.User {
 	var u data.User
-	err := db.QueryRow("SELECT * FROM users WHERE name=?", name).Scan(&u.Name, &u.Password, &u.Email, &u.Admin, &u.LastLogin, &u.LastNotif)
+	lastlogin := u.LastLogin.String()
+	lastnotif := u.LastNotif.String()
+	err := db.QueryRow("SELECT * FROM users WHERE name=?", name).Scan(&u.Name, &u.Password, &u.Email, &u.Admin, &lastlogin, &lastnotif)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -91,9 +89,13 @@ func (db *Database) GetServers() []data.Server {
 		log.Fatal(err)
 	}
 	var servers []data.Server
+
 	for rows.Next() {
 		var s data.Server
-		err = rows.Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime, &s.LastUpdate, &s.LastCheck, &s.LastStatus, &s.Monitor)
+		lastupdate := s.LastUpdate.String()
+		lastcheck := s.LastCheck.String()
+		err = rows.Scan(&s.Name, &s.IP, &s.URL, &s.AvarageResponseTime, &lastupdate, &lastcheck, &s.LastStatus, &s.Monitor)
+
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -109,9 +111,12 @@ func (db *Database) GetUsers() []data.User {
 		log.Fatal(err)
 	}
 	var users []data.User
+
 	for rows.Next() {
 		var u data.User
-		err = rows.Scan(&u.Name, &u.Password, &u.Email, &u.Admin, &u.LastLogin, &u.LastNotif)
+		lastlogin := u.LastLogin.String()
+		lastnotif := u.LastNotif.String()
+		err = rows.Scan(&u.Name, &u.Password, &u.Email, &u.Admin, &lastlogin, &lastnotif)
 		if err != nil {
 			log.Fatal(err)
 		}
