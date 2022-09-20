@@ -1,4 +1,4 @@
-
+[![Go Reference](https://pkg.go.dev/badge/github.com/moohbr/WebMonitor.svg)](https://pkg.go.dev/github.com/moohbr/WebMonitor)
 # WebMonitor
 
 Faced with a considerable number of tools that monitor your site, why use WebMonitor? Why use a lightweight, easy and cost-free tool? I don't know either.
