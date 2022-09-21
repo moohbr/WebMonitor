@@ -19,24 +19,6 @@ It's a tool made by a university student 'n intern, so it's constantly improving
 - [ ] Create a web interface to manage the application
 - [ ] User profiles and authentication
 
-## Installation
-
-
-### Manual
-
-1. Clone the repository
-2. Install the dependencies with `go build`
-3. Run the script with `WebMonitor`
-
-## Usage
-
-
-### Manual
-
-1. Create a `.env` file.
-
-
-2. Install the dependencies with `go build` and run the script with `WebMonitor`
 
 ## Contributing
 
@@ -49,7 +31,9 @@ If you want to contribute to this project, you can do it in two ways:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-## Environment Variables
+
+## Documentation
+### Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
 
@@ -60,7 +44,7 @@ To run this project, you will need to add the following environment variables to
 `SMTP_PASSWORD` - SMTP server password
 `SMTP_INSECURE` - SMTP server insecure
 
-## CLI Arguments
+### CLI Arguments
 
  Available Commands:
   install     Install database for first time
@@ -76,6 +60,24 @@ Flags:
   -h, --help      help for WebMonitor
   -v, --verbose   verbose output
 
+### Installation
+
+
+#### Manual
+
+1. Clone the repository
+2. Install the dependencies with `go build`
+3. Run the script with `WebMonitor`
+
+### Usage
+
+
+#### Manual
+
+1. Create a `.env` file.
+
+
+2. Install the dependencies with `go build` and run the script with `webmonitor`
 
 ## Questions
 
