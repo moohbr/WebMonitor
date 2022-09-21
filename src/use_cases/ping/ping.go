@@ -44,17 +44,13 @@ func PingServer(server data.Server) {
 		users := db.GetUsers()
 
 		if len(users) > 0 {
-			wg.Add(len(users))
 			if server.LastStatus != 200 {
+				wg.Add(len(users))
 				for _, user := range users {
 					go mail.SendMail([]string{user.Email}, templates.ServerDown(server), &wg)
 				}
 				return
 			}
-			for _, user := range users {
-				go mail.SendMail([]string{user.Email}, templates.ServerUp(server), &wg)
-			}
-			return
 		}
 	}
 }
