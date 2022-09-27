@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
+	"github.com/moohbr/WebMonitor/src/infrastructure/database"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )
@@ -93,8 +93,14 @@ var (
 
 func init() {
 	ShowCmd.AddCommand(showServersCmd)
+
 	showServerCmd.Flags().StringP("name", "n", "", "The name of the server")
-	showServerCmd.MarkFlagRequired("name")
+
+	err := showServerCmd.MarkFlagRequired("name")
+	if err != nil {
+		log.Println("[ERROR] Error while marking the flag as required")
+	}
+
 	showServerCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Show more information")
 
 	ShowCmd.AddCommand(showServerCmd)

@@ -5,5 +5,10 @@ import (
 )
 
 func main() {
-	cmd.RootCmd.Execute()
+	err := cmd.RootCmd.Execute()
+
+	if err != nil {
+		panic(err)
+	}
+
 }

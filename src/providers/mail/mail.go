@@ -3,7 +3,8 @@ package mail
 import (
 	"crypto/tls"
 
-	config "github.com/moohbr/WebMonitor/src/infrastructure/config"
+	"github.com/moohbr/WebMonitor/src/infrastructure/config"
+
 	gomail "gopkg.in/mail.v2"
 )
 
@@ -35,7 +36,7 @@ func (mail *Mail) Send() error {
 	dialer.TLSConfig = &tls.Config{InsecureSkipVerify: config.ConvertToBool(config.GetEnv("SMTP_INSECURE"))}
 
 	if err := dialer.DialAndSend(message); err != nil {
-		panic(err)
+		return err
 	}
 
 	return nil

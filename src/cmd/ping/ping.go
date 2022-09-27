@@ -1,14 +1,12 @@
-package add
+package ping
 
 import (
 	"github.com/spf13/cobra"
 
-	ping "github.com/moohbr/WebMonitor/src/use_cases/ping"
+	"github.com/moohbr/WebMonitor/src/agents/ping"
 )
 
 var (
-	verbose bool
-
 	PingCmD = &cobra.Command{
 		Use:   "ping",
 		Short: "Ping a server",

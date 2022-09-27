@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
+	"github.com/moohbr/WebMonitor/src/infrastructure/database"
 )
 
 var (
@@ -53,11 +53,19 @@ func init() {
 	RemoveCmd.AddCommand(removeServerCmd)
 
 	removeServerCmd.Flags().StringP("name", "n", "", "The name of the server")
-	removeServerCmd.MarkPersistentFlagRequired("name")
+	err := removeServerCmd.MarkPersistentFlagRequired("name")
+	if err != nil {
+		log.Println("[ERROR] Error on mark the flag as required")
+	}
 	removeServerCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 
 	RemoveCmd.AddCommand(removeUserCmd)
 	removeUserCmd.Flags().StringP("name", "n", "", "The name of the user")
-	removeServerCmd.MarkPersistentFlagRequired("name")
+	err = removeServerCmd.MarkPersistentFlagRequired("name")
+
+	if err != nil {
+		log.Println("[ERROR] Error on mark the flag as required")
+	}
+
 	removeUserCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 }

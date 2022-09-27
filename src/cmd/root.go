@@ -5,12 +5,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	add "github.com/moohbr/WebMonitor/src/cmd/add"
-	install "github.com/moohbr/WebMonitor/src/cmd/install"
-	ping "github.com/moohbr/WebMonitor/src/cmd/ping"
-	remove "github.com/moohbr/WebMonitor/src/cmd/remove"
-	show "github.com/moohbr/WebMonitor/src/cmd/show"
-	update "github.com/moohbr/WebMonitor/src/cmd/update"
+	"github.com/moohbr/WebMonitor/src/cmd/add"
+	"github.com/moohbr/WebMonitor/src/cmd/install"
+	"github.com/moohbr/WebMonitor/src/cmd/ping"
+	"github.com/moohbr/WebMonitor/src/cmd/remove"
+	"github.com/moohbr/WebMonitor/src/cmd/show"
+	"github.com/moohbr/WebMonitor/src/cmd/update"
 )
 
 var (

@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	database "github.com/moohbr/WebMonitor/src/infrastructure/database"
+	"github.com/moohbr/WebMonitor/src/infrastructure/database"
 )
 
 var (
