@@ -35,17 +35,17 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Documentation
 ### Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
+To run this project, you will need to add the following environment variables to your `.env` file:
 
-
-`SMPT_SERVER` - SMTP server address
-`SMTP_PORT` - SMTP server port
-`SMTP_USER` - SMTP server user
-`SMTP_PASSWORD` - SMTP server password
-`SMTP_INSECURE` - SMTP server insecure
+- `SMPT_SERVER` - SMTP server address
+- `SMTP_PORT` - SMTP server port
+- `SMTP_USER` - SMTP server user
+- `SMTP_PASSWORD` - SMTP server password
+- `SMTP_INSECURE` - SMTP server insecure
 
 ### CLI Arguments
 
+```
  Available Commands:
   install     Install database for first time
   show        Show a list of servers or users
@@ -59,6 +59,7 @@ Use "WebMonitor [command] --help" for more information about a command.
 Flags:
   -h, --help      help for WebMonitor
   -v, --verbose   verbose output
+```
 
 ### Installation
 
@@ -75,8 +76,6 @@ Flags:
 #### Manual
 
 1. Create a `.env` file.
-
-
 2. Install the dependencies with `go build` and run the script with `webmonitor`
 
 ## Questions
