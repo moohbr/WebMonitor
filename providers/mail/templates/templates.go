@@ -1,7 +1,7 @@
 package templates
 
 import (
-	"github.com/moohbr/WebMonitor/src/data"
+	"github.com/moohbr/WebMonitor/data"
 )
 
 type Mail struct {

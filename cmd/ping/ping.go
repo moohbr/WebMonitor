@@ -3,7 +3,7 @@ package ping
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/moohbr/WebMonitor/src/agents/ping"
+	"github.com/moohbr/WebMonitor/agents/ping"
 )
 
 var (

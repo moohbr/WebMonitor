@@ -1,8 +1,8 @@
 package sendMail
 
 import (
-	email "github.com/moohbr/WebMonitor/src/providers/mail"
-	"github.com/moohbr/WebMonitor/src/providers/mail/templates"
+	email "github.com/moohbr/WebMonitor/providers/mail"
+	"github.com/moohbr/WebMonitor/providers/mail/templates"
 )
 
 // Function to send the report mail

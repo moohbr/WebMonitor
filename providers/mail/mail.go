@@ -3,7 +3,7 @@ package mail
 import (
 	"crypto/tls"
 
-	"github.com/moohbr/WebMonitor/src/infrastructure/config"
+	"github.com/moohbr/WebMonitor/infrastructure/config"
 
 	gomail "gopkg.in/mail.v2"
 )

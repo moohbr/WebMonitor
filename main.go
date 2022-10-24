@@ -1,7 +1,7 @@
 package main
 
 import (
-	cmd "github.com/moohbr/WebMonitor/src/cmd"
+	cmd "github.com/moohbr/WebMonitor/cmd"
 )
 
 func main() {

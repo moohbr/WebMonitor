@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/moohbr/WebMonitor/src/infrastructure/database"
+	"github.com/moohbr/WebMonitor/infrastructure/database"
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
 )

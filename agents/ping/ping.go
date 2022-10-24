@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	mail "github.com/moohbr/WebMonitor/src/agents/sendMail"
-	"github.com/moohbr/WebMonitor/src/data"
-	"github.com/moohbr/WebMonitor/src/infrastructure/database"
-	"github.com/moohbr/WebMonitor/src/providers/mail/templates"
+	mail "github.com/moohbr/WebMonitor/agents/sendMail"
+	"github.com/moohbr/WebMonitor/data"
+	"github.com/moohbr/WebMonitor/infrastructure/database"
+	"github.com/moohbr/WebMonitor/providers/mail/templates"
 )
 
 func PingServer(server data.Server) {

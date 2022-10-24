@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/moohbr/WebMonitor/src/infrastructure/database"
+	"github.com/moohbr/WebMonitor/infrastructure/database"
 )
 
 var (
@@ -30,6 +30,10 @@ var (
 			log.Println("[SYSTEM] Removing a server")
 
 			name, _ := cmd.Flags().GetString("name")
+			if name == "" {
+				log.Println("[ERROR] The name of the server is required")
+				return
+			}
 			db := database.OpenDatabase()
 			db.DeleteServer(name)
 		},
@@ -43,6 +47,10 @@ var (
 			log.Println("[SYSTEM] Removing a user")
 
 			name, _ := cmd.Flags().GetString("name")
+			if name == "" {
+				log.Println("[ERROR] The name of the user is required")
+				return
+			}
 			db := database.OpenDatabase()
 			db.DeleteUser(name)
 		},
@@ -51,20 +59,24 @@ var (
 
 func init() {
 	RemoveCmd.AddCommand(removeServerCmd)
-
-	removeServerCmd.Flags().StringP("name", "n", "", "The name of the server")
+	removeServerCmd.PersistentFlags().StringP("name", "n", "", "The name of the server")
 	err := removeServerCmd.MarkPersistentFlagRequired("name")
+
 	if err != nil {
-		log.Println("[ERROR] Error on mark the flag as required")
+		log.Println("[ERROR] Error to mark the flag as required")
+		log.Fatal(err)
 	}
+
 	removeServerCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 
+	
 	RemoveCmd.AddCommand(removeUserCmd)
-	removeUserCmd.Flags().StringP("name", "n", "", "The name of the user")
-	err = removeServerCmd.MarkPersistentFlagRequired("name")
+	removeUserCmd.PersistentFlags().StringP("name", "n", "", "The name of the server")
 
+	err = removeServerCmd.MarkPersistentFlagRequired("name")
 	if err != nil {
-		log.Println("[ERROR] Error on mark the flag as required")
+		log.Println("[ERROR] Error to mark the flag as required")
+		log.Fatal(err)
 	}
 
 	removeUserCmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")

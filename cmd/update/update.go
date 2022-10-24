@@ -6,8 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/moohbr/WebMonitor/src/data"
-	"github.com/moohbr/WebMonitor/src/infrastructure/database"
+	"github.com/moohbr/WebMonitor/data"
+	"github.com/moohbr/WebMonitor/infrastructure/database"
 )
 
 var (

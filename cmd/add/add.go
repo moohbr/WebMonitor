@@ -5,12 +5,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/moohbr/WebMonitor/src/data"
-	"github.com/moohbr/WebMonitor/src/infrastructure/database"
-	"github.com/moohbr/WebMonitor/src/providers/mail/templates"
+	"github.com/moohbr/WebMonitor/data"
+	"github.com/moohbr/WebMonitor/infrastructure/database"
+	"github.com/moohbr/WebMonitor/providers/mail/templates"
 	"github.com/spf13/cobra"
 
-	mail "github.com/moohbr/WebMonitor/src/agents/sendMail"
+	mail "github.com/moohbr/WebMonitor/agents/sendMail"
 )
 
 var (
